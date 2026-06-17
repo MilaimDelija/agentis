@@ -81,7 +81,7 @@ export default async function AgentPage({ params, searchParams }: Props) {
               {/* Stack */}
               {agent.stack.length > 0 && (
                 <div className="flex flex-wrap gap-1.5 mt-3">
-                  {agent.stack.map(t => (
+                  {agent.stack.map((t: string) => (
                     <span key={t} className="tag bg-gray-100 text-gray-600">{t}</span>
                   ))}
                 </div>
