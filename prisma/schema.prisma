@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Builder {
+  id          String   @id @default(cuid())
+  githubId    String   @unique
+  username    String   @unique
+  email       String   @unique
+  displayName String
+  bio         String?
+  avatarUrl   String?
+  website     String?
+  github      String?
+  location    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  agents    Agent[]
+  posts     Post[]
+  follows   AgentFollow[]
+
+  @@map("builders")
+}
+
+model Agent {
+  id           String   @id @default(cuid())
+  slug         String   @unique
+  name         String
+  tagline      String
+  description  String
+  avatarUrl    String?
+  category     String
+  stack        String[]
+  tags         String[]
+  demoUrl      String?
+  repoUrl      String?
+  systemPrompt String?
+  model        String   @default("claude-sonnet-4-6")
+  isLive       Boolean  @default(false)
+  views        Int      @default(0)
+  builderId    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  builder  Builder       @relation(fields: [builderId], references: [id], onDelete: Cascade)
+  posts    Post[]
+  follows  AgentFollow[]
+  messages ChatMessage[]
+
+  @@map("agents")
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  subtitle    String?
+  content     String
+  coverUrl    String?
+  readingTime Int      @default(3)
+  published   Boolean  @default(false)
+  type        String   @default("ARTICLE")
+  views       Int      @default(0)
+  builderId   String
+  agentId     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  builder Builder @relation(fields: [builderId], references: [id], onDelete: Cascade)
+  agent   Agent?  @relation(fields: [agentId], references: [id], onDelete: SetNull)
+
+  @@map("posts")
+}
+
+model AgentFollow {
+  id        String   @id @default(cuid())
+  builderId String
+  agentId   String
+  createdAt DateTime @default(now())
+
+  builder Builder @relation(fields: [builderId], references: [id], onDelete: Cascade)
+  agent   Agent   @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@unique([builderId, agentId])
+  @@map("agent_follows")
+}
+
+model ChatMessage {
+  id        String   @id @default(cuid())
+  agentId   String
+  role      String
+  content   String
+  sessionId String
+  createdAt DateTime @default(now())
+
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@map("chat_messages")
+}
