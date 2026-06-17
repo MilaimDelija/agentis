@@ -38,7 +38,7 @@ export default async function HomePage() {
 
             {posts.length > 0 ? (
               <div className="space-y-4">
-                {posts.map(post => (
+                {posts.map((post: any) => (
                   <Link
                     key={post.id}
                     href={post.agent ? `/agents/${post.agent.slug}/posts/${post.slug}` : `/posts/${post.slug}`}
@@ -93,7 +93,7 @@ export default async function HomePage() {
               <h3 className="font-semibold text-gray-800 text-sm mb-4">Trending agents</h3>
               {agents.length > 0 ? (
                 <div className="space-y-4">
-                  {agents.map(agent => (
+                  {agents.map((agent: any) => (
                     <Link key={agent.id} href={`/agents/${agent.slug}`} className="flex items-center gap-3 group">
                       <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                         {agent.name[0]}

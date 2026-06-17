@@ -121,7 +121,7 @@ export default async function AgentPage({ params, searchParams }: Props) {
           </div>
         ) : (
           <div className="space-y-4">
-            {agent.posts.length > 0 ? agent.posts.map(post => (
+            {agent.posts.length > 0 ? agent.posts.map((post: any) => (
               <Link key={post.id} href={`/agents/${slug}/posts/${post.slug}`} className="card p-5 block hover:border-blue-200 transition-colors group">
                 <div className="flex items-center gap-2 mb-2">
                   <span className="tag bg-blue-50 text-blue-600">{post.type}</span>

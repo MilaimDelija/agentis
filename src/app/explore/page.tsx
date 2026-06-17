@@ -36,7 +36,7 @@ export default async function ExplorePage({ searchParams }: Props) {
 
         {agents.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {agents.map(agent => (
+            {agents.map((agent: any) => (
               <Link key={agent.id} href={`/agents/${agent.slug}`} className="card p-5 hover:border-blue-200 transition-all group block">
                 <div className="flex items-start gap-3 mb-3">
                   <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold flex-shrink-0">
